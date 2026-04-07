@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Alert</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('weatherimg.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+        }
+        header {
+            background-color: #228B22;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+        }
+        .weather-container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        .weather-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px;
+            white-space: nowrap;
+        }
+        .weather-card {
+            background: #ffa500;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            min-width: 150px;
+        }
+        .icon {
+            font-size: 30px;
+        }
+        .location {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>Weather Alert</header>
+    <div class="weather-container">
+        <div class="location" id="location">Fetching location...</div>
+        <div class="weather-row" id="weather-data"></div>
+    </div>
+
+    <script>
+        function getWeatherIcon(description) {
+            const weatherIcons = {
+                "clear sky": "\u2600\ufe0f", // ☀️
+                "few clouds": "\u26c5", // ⛅
+                "scattered clouds": "\u2601", // ☁
+                "broken clouds": "\u2601", // ☁
+                "shower rain": "\ud83c\udf27\ufe0f", // 🌧️
+                "rain": "\ud83c\udf26\ufe0f", // 🌦️
+                "thunderstorm": "\u26a1", // ⚡
+                "snow": "\u2744\ufe0f", // ❄️
+                "mist": "\ud83c\udf2b\ufe0f" // 🌫️
+            };
+            return weatherIcons[description] || "\u2601"; // Default to cloud if unknown
+        }
+
+        function fetchWeather(lat, lon) {
+            const apiKey = 'aeb628894fc54ce63ea37836c9511b1b'; // Replace with your actual API key
+            const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=40&units=metric&appid=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("API Response:", data);
+                    if (data.cod !== "200") {
+                        throw new Error(`API Error: ${data.message}`);
+                    }
+                    
+                    document.getElementById('location').innerText = `Location: ${data.city.name}`;
+                    const weatherDiv = document.getElementById('weather-data');
+                    weatherDiv.innerHTML = '';
+                    const dailyData = {};
+                    
+                    data.list.forEach(entry => {
+                        const date = new Date(entry.dt * 1000).toDateString();
+                        if (!dailyData[date] || new Date(entry.dt * 1000).getHours() === 12) {
+                            dailyData[date] = {
+                                temp: entry.main.temp,
+                                humidity: entry.main.humidity,
+                                wind: entry.wind.speed,
+                                weather: entry.weather[0].description
+                            };
+                        }
+                    });
+
+                    if (Object.keys(dailyData).length === 0) {
+                        weatherDiv.innerHTML = "<p style='color:red;'>No weather data available.</p>";
+                        return;
+                    }
+
+                    for (const date in dailyData) {
+                        const icon = getWeatherIcon(dailyData[date].weather);
+                        weatherDiv.innerHTML += `
+                            <div class='weather-card'>
+                                <h3>${date}</h3>
+                                <p class='icon'>${icon}</p>
+                                <p>Temp: ${dailyData[date].temp}°C</p>
+                                <p>Humidity: ${dailyData[date].humidity}%</p>
+                                <p>Wind: ${dailyData[date].wind} km/h</p>
+                            </div>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('weather-data').innerHTML = `<p style='color:red;'>Failed to load weather data. ${error.message}</p>`;
+                });
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        fetchWeather(position.coords.latitude, position.coords.longitude);
+                    }, 
+                    error => {
+                        alert('Location access denied. Please enable location services.');
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+
+        getLocation();
+    </script>
+</body>
+</html>

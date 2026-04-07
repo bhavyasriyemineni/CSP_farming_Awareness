@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crop Recommendation System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #047857;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Crop Recommendation System</h2>
+    <form id="cropForm">
+      <label for="region">Region:</label>
+      <select id="region" name="region" required>
+        <option value="">Select Region</option>
+        <option value="Punjab">Punjab</option>
+        <option value="Tamil Nadu">Tamil Nadu</option>
+        <option value="Maharashtra">Maharashtra</option>
+        <option value="Coastal Zone">Coastal Zone</option>
+        <option value="Western Plateau">Western Plateau</option>
+        <option value="Lower Gangetic Plains">Lower Gangetic Plains</option>
+        <option value="Central Dry Zone">Central Dry Zone</option>
+      </select>
+
+      <label for="soil">Soil Type:</label>
+      <select id="soil" name="soil" required>
+        <option value="">Select Soil Type</option>
+        <option value="loamy">Loamy</option>
+        <option value="sandy">Sandy</option>
+        <option value="clay">Clay</option>
+        <option value="black">Black</option>
+        <option value="red">Red</option>
+      </select>
+
+      <label for="previous">Previous Crop:</label>
+      <input type="text" id="previous" name="previous" required />
+
+      <label for="season">Season:</label>
+      <select id="season" name="season" required>
+        <option value="">Select Season</option>
+        <option value="kharif">Kharif</option>
+        <option value="rabi">Rabi</option>
+        <option value="zaid">Zaid</option>
+      </select>
+
+      <label for="weather">Weather Data (Summary):</label>
+      <input type="text" id="weather" name="weather" placeholder="e.g. Moderate rainfall, 25°C" required />
+
+      <button type="button" onclick="recommendCrop()">Get Recommendation</button>
+    </form>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function recommendCrop() {
+      const region = document.getElementById("region").value;
+      const soil = document.getElementById("soil").value;
+      const previous = document.getElementById("previous").value;
+      const season = document.getElementById("season").value;
+      const weather = document.getElementById("weather").value;
+
+      // Basic example logic (replace with real ML model or API call)
+      let crop = "";
+
+      if (soil === "loamy" && season === "kharif") {
+        crop = "Rice";
+      } else if (soil === "black" && season === "rabi") {
+        crop = "Wheat";
+      } else if (soil === "sandy") {
+        crop = "Millets";
+      } else {
+        crop = "Maize"; // default suggestion
+      }
+
+      document.getElementById("result").innerText =
+        `Recommended Crop: ${crop}`;
+    }
+  </script>
+</body>
+</html>

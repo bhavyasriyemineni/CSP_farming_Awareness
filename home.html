@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm & Profit Dashboard</title>
+
+    <!-- Google Fonts: Adding the Sail font style -->
+    <link href="https://fonts.googleapis.com/css2?family=Sail&family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        header {
+            background-color: rgba(135, 206, 250, 0.8);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            align-items: center;
+            position: relative;
+        }
+
+        .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            margin-right: 20px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #333;
+            color: white;
+            padding-top: 60px;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-image: url('farming_logo.png');
+            background-size: cover;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 30px;
+            font-weight: bold;
+            font-family: 'Sail', cursive;
+            color: #228B22;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text::before {
+            content: "🌱";
+            margin-right: 8px;
+            font-size: 30px;
+            color: #228B22;
+        }
+
+        .menu {
+            display: flex;
+            gap: 20px;
+            font-size: 16px;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu a:hover {
+            color: #D4E157;
+        }
+
+        .content {
+            padding: 20px;
+            min-height: 80vh;
+        }
+
+        .dashboard-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-section a {
+            text-decoration: none;
+            font-size: 18px;
+            color: #228B22;
+            font-weight: bold;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-section a:hover {
+            background: #D4E157;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="logo-container">
+            <div class="logo"></div>
+            <div class="logo-text">Farm & Profit</div>
+        </div>
+        
+        <div class="menu">
+            <a href="#">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="market.html">Market Trend</a>
+            <a href="weather.html">Weather Alert</a>
+            <a href="getrecm.html">Recommendations</a>
+        </div>
+        
+        <div class="profile">
+            <a href="#">👤 Profile</a>
+            <div class="profile-dropdown">
+                <a href="#">My Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <a href="#">About Site</a>
+        <a href="#">Profile</a>
+        <a href="#">Help</a>
+        <a href="#">Language Settings</a>
+        <a href="#">Update Profile</a>
+        <a href="#">Feedback</a>
+    </div>
+
+    <div class="content">
+        <h2>WELCOME to the Dashboard</h2>
+        <p>Manage your farming activities, track market trends, and stay updated with weather alerts.</p>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            if (sidebar.style.display === "block") {
+                sidebar.style.display = "none";
+            } else {
+                sidebar.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
